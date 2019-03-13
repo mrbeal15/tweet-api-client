@@ -1,25 +1,60 @@
+import axios from 'axios';
 import React, { Component } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Tweet from './components/tweet';
 
 class App extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      loading: false,
+      data: null
+    }
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  componentDidMount() {
+    this.setState({ loading: true });
+
+    axios({
+      method: 'get',
+      url: 'https://frozen-cove-98276.herokuapp.com/tweets',
+      responseType: 'json'
+    }).then(data => {
+      this.setState({ data: data, loading: false })
+    })
+  }
+
+  handleChange(event) {
+    this.setState({ loading: true })
+
+    const queryTopic = event.target.value;
+
+    axios({
+      method: 'get',
+      url: `https://frozen-cove-98276.herokuapp.com/tweets/topics?topic=${queryTopic}`,
+      responseType: 'json'
+    }).then(data => {
+      this.setState({ data: data, loading: false, value: queryTopic })
+    })
+  }
+
   render() {
+    if (this.state.loading) {
+      return <p>Loading tweets...</p>
+    }
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <label>Select a Topic:
+          <select value={this.state.value} onChange={this.handleChange}>
+            <option value="nasa">Nasa</option>
+            <option value="health care">Health Care</option>
+            <option value="open source">Open Source</option>
+          </select>
+        </label>
+        <Tweet { ...this.state.data } />
       </div>
     );
   }
