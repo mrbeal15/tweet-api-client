@@ -15,7 +15,7 @@ export default class Torm extends React.Component {
   }
 
   handleSubmit(event) {
-    axios.post('http://localhost:3001/tweets', {
+    axios.post('/tweets', {
       content: this.state.value
     })
     .then(function (response) {
