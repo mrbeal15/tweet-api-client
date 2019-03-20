@@ -1,4 +1,5 @@
 import axios from 'axios';
+import Torm from './components/torm';
 import React, { Component } from 'react';
 import Tweet from './components/tweet';
 
@@ -19,7 +20,7 @@ class App extends Component {
 
     axios({
       method: 'get',
-      url: 'https://frozen-cove-98276.herokuapp.com/tweets',
+      url: '/tweets',
       responseType: 'json'
     }).then(data => {
       this.setState({ data: data, loading: false })
@@ -33,7 +34,7 @@ class App extends Component {
 
     axios({
       method: 'get',
-      url: `https://frozen-cove-98276.herokuapp.com/tweets/topics?topic=${queryTopic}`,
+      url: `/tweets/topics?topic=${queryTopic}`,
       responseType: 'json'
     }).then(data => {
       this.setState({ data: data, loading: false, value: queryTopic })
@@ -47,6 +48,7 @@ class App extends Component {
 
     return (
       <div className="App">
+        <Torm />
         <label>Select a Topic:
           <select value={this.state.value} onChange={this.handleChange}>
             <option value="nasa">Nasa</option>
