@@ -20,7 +20,7 @@ class App extends Component {
 
     axios({
       method: 'get',
-      url: '/tweets',
+      url: `${process.env.REACT_APP_API_URL}/tweets`,
       responseType: 'json'
     }).then(data => {
       this.setState({ data: data, loading: false })
@@ -34,7 +34,7 @@ class App extends Component {
 
     axios({
       method: 'get',
-      url: `/tweets/topics?topic=${queryTopic}`,
+      url: `${process.env.REACT_APP_API_URL}/tweets/topics?topic=${queryTopic}`,
       responseType: 'json'
     }).then(data => {
       this.setState({ data: data, loading: false, value: queryTopic })
